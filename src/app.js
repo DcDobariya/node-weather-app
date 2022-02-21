@@ -1,4 +1,3 @@
-const geocode = require("./utils/geoCode");
 const forecast = require("./utils/forecast");
 const express = require("express");
 const app = express();
@@ -23,14 +22,10 @@ app.get("/weather", (req, res) => {
 
     if (!address) return res.send({ error: "Please provide an address" });
 
-    geocode(address, (error, { latitude, longitude, location } = {}) => {
+    forecast(address, (error, { forecast, location }) => {
         if (error) return res.send({ error });
 
-        forecast(latitude, longitude, (error, forecast) => {
-            if (error) return res.send({ error });
-
-            res.send({ forecast, location, address });
-        });
+        res.send({ forecast, location, address });
     });
 });
 
